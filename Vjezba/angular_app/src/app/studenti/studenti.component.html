@@ -1,0 +1,44 @@
+<p>studenti works!</p>
+
+<div>
+  <input (click)="fenableIme()" [(ngModel)] = "filter_ime_prezime" type="checkbox"> Filter by <span style="font-weight: bold">Ime / prezime</span> <br>
+  <input (ngModelChange)="filtrirajPoImenu()" [disabled]="enableIme" [(ngModel)]="ime_prezime"><br>
+  <hr>
+
+  <input (click)="fenableOpstina()" [(ngModel)] = "filter_opstina" type="checkbox"> Filter by <span style="font-weight: bold">Opština rođenja</span> <br>
+  <input (ngModelChange)="filtrirajPoOpstini()" [disabled]="enableOpstina" [(ngModel)]="opstina"><br>
+  <hr>
+</div>
+<table class="table table-warning">
+  <tr>
+    <th>ID</th>
+    <th>Ime</th>
+    <th>Prezime</th>
+    <th>Broj indeksa</th>
+    <th>Drzava rođenja</th>
+    <th>Opstina rođenja</th>
+    <th>Datum dodavanja</th>
+    <th>Akcija</th>
+  </tr>
+  <tbody>
+  <tr  *ngFor="let s of this.studentPodaci"  >
+    <td *ngIf="!s.hidden">{{s.id}}</td>
+    <td *ngIf="!s.hidden">{{s.ime}}</td>
+    <td *ngIf="!s.hidden">{{s.prezime}}</td>
+    <td *ngIf="!s.hidden">{{s.brojIndeksa}}</td>
+    <td *ngIf="!s.hidden">{{s.opstina_rodjenja!=null?s.opstina_rodjenja.drzava.naziv:""}}</td>
+    <td *ngIf="!s.hidden">{{s.opstina_rodjenja!=null?s.opstina_rodjenja.description:""}}</td>
+    <td *ngIf="!s.hidden">{{s.datum_rodjenja}}</td>
+    <td *ngIf="!s.hidden">
+      <button (click)="sakriZapis(s)" >Obrisi</button>
+      <button (click)="otvoriEditModal(s,s.opstina_rodjenja_id)">Uredi</button>
+      <button (click)="otvoriMaticnuKnjigu(s)" >Maticna knjiga</button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<app-student-edit (reload)="handleReload()" [data]="studentEditData" [defaultOpstina]="defaultOpstina" [showModal]="openEditModal" (closeModal)="closeEditModal()"  ></app-student-edit>
+<app-student-add (reload)="handleReload()" [ime]="ime_prezime.split(' ')[0]" [prezime]="ime_prezime.split(' ')[1]" [defaultOpstina]="2" [showModal]="openAddModal" (closeModal)="closeAddModal()"></app-student-add>
+<button (click)="otvoriAddModal()" class="form-label">Novi student</button>
+
+
